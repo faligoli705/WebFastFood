@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,25 +15,33 @@ namespace WebFastFood.Services.Repository
     {
         string apiUrl = "http://localhost:64467/api/StoreInvoicing";
         HttpClient _client;
-        public StoreInvoicingRepository()
+        ILogger<StoreInvoicingRepository> _logger;
+        public StoreInvoicingRepository(ILogger<StoreInvoicingRepository> logger)
         {
             _client = new HttpClient();
+            _logger = logger;
 
         }
         public void AddStoreInvoicing(string productId, int currentUserId)
         {
-
-            var value = new
+            try
             {
-                productId = productId,
-                currentUserId = currentUserId
-            };
-            string jsonstoreInvoicing = JsonConvert.SerializeObject(value);
-            StringContent content = new StringContent(jsonstoreInvoicing, Encoding.UTF8, "application/json");
-            var result = _client.PostAsJsonAsync(apiUrl, content).Result;
-            var isSuccessStatusCode = result.IsSuccessStatusCode;
+                _logger.LogWarning("اضافه کردن محصول به لیست خرید");
+                var value = new
+                {
+                    productId = productId,
+                    currentUserId = currentUserId
+                };
+                string jsonstoreInvoicing = JsonConvert.SerializeObject(value);
+                StringContent content = new StringContent(jsonstoreInvoicing, Encoding.UTF8, "application/json");
+                var result = _client.PostAsJsonAsync(apiUrl, content).Result;
+                var isSuccessStatusCode = result.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
 
-
+                throw;
+            }
 
         }
     }
