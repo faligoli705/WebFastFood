@@ -23,7 +23,7 @@ namespace FastFood.DataLayer.Services.Repository
             var errors = new List<string>();
             if (errors.Any())
                 return ServiceResult<StoreInvoicing>.Failed(errors);
-            StoreInvoicing storeInvoicing = _context.StoreInvoicings.SingleOrDefault(s => s.CustomerId == 1);
+            StoreInvoicing storeInvoicing = _context.StoreInvoicings.SingleOrDefault(s => s.CustomerId == 1 && s.StoreInvoicingStatus==1);
             if (storeInvoicing == null)
             {
                 storeInvoicing = new StoreInvoicing
