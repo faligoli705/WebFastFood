@@ -1,0 +1,65 @@
+﻿@model IEnumerable<FastFood.DomainClass.Domain.Dto.CategoryDto>
+
+@{
+    ViewData["Title"] = "ListCategory";
+}
+
+<h1>ListCategory</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryCreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryUpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryDeleteDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDelete)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryCreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryDeleteDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDelete)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

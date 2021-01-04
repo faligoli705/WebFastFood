@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ProductDto>
+@{
+    ViewData["Title"] = "Home Page";
+    int rowCount = 1;
+}
+
+<button class="btn btn-success" onclick="submitOrder()">Submit Order</button>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Product Preparation Time</th>
+        <th>Status</th>
+        <th>Number of orders</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@rowCount</td>
+            <td>@item.ProductName</td>
+            <td>@item.ProductPreparationTime</td>
+            <td>@item.Status</td>
+            <td><input id="numberOfOrder" type="number" /></td>
+            <td>
+                <a href="/Product/Edit/@item.ProductID" class="btn btn-warning">Edit</a>
+                @*<a href="/Product/SubmitOrder/@item.ProductID" class="btn btn-warning">Submit Order</a>*@
+                <a asp-controller="StoreInvoicing" asp-action="AddToStoreInvoicing" class="btn btn-success" asp-route-id="@item.ProductID">Add to cart</a>
+                <a href="/Product/Delete/@item.ProductID" class="btn btn-danger" onclick="return confirm('Are you sure to delete Product : @item.ProductName')">Delete</a>
+            </td>
+        </tr>
+        rowCount++;
+
+    }
+</table>
+
+
+<script src="~/lib/jquery/dist/jquery-3.3.1.min.js"></script>
+
+@section Scripts {
+    <script>
+        function submitOrder() {
+            $.ajax({
+                url: "/Product/SubmitOrder",
+                type: 'Post',
+                contentType: 'application/json; charset=UTF-8',
+                data: { numberOfOrder: numberOfOrder },
+                dataType: "json",
+                //cache: false,
+                success: function (data) {
+                    // Process the received data.
+                }
+            });
+        }
+    </script>
+}
