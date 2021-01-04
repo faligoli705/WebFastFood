@@ -13,8 +13,8 @@ namespace FastFood.Controllers
     /// 
     /// </summary>
     public class CategoryController : Controller
-    {       
-        
+    {
+
         private readonly ICategory _category;
         private readonly ILogger<CategoryController> _logger;
         /// <summary>
@@ -35,22 +35,30 @@ namespace FastFood.Controllers
         [HttpGet]
         public IActionResult CategoryList()
         {
-            
-            var result = _category.ListCategory();
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null && result.Data.Any())
+                _logger.LogWarning("اجرای متد ایجاد دسته بندی");
+                var result = _category.ListCategory();
+                if (result.IsSucceed)
                 {
-                    _logger.LogInformation("نمایش لیست محصولات");
-                    return Ok(result.Data);
+                    if (result.Data != null && result.Data.Any())
+                    {
+                        _logger.LogInformation("نمایش لیست محصولات");
+                        return Ok(result.Data);
+                    }
+                    else
+                    {
+                        return NotFound();
+                        _logger.LogError("محصولی یافت نشد");
+                    }
                 }
-                else
-                {
-                    return NotFound();
-                    _logger.LogError("محصولی یافت نشد");
-                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         /// <summary>
         ///
@@ -60,21 +68,30 @@ namespace FastFood.Controllers
         [HttpGet("{id}")]
         public IActionResult CategoryById(int id)
         {
-            var result = _category.GetCategoryById(id);
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null)
+                _logger.LogWarning("اجرای متد پیدا کردن دسته بندی بر اساس آیدی");
+                var result = _category.GetCategoryById(id);
+                if (result.IsSucceed)
                 {
-                    _logger.LogError(" نمایش دسته بندی ها بر اساس ایدی");
-                    return Ok(result.Data);
+                    if (result.Data != null)
+                    {
+                        _logger.LogError(" نمایش دسته بندی ها بر اساس ایدی");
+                        return Ok(result.Data);
+                    }
+                    else
+                    {
+                        _logger.LogError("دسته بندی یافت نشد");
+                        return NotFound();
+                    }
                 }
-               else {
-                    _logger.LogError("دسته بندی یافت نشد");
-                    return NotFound();
-                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
 
+                throw;
+            }
         }
         /// <summary>
         /// 
@@ -84,24 +101,32 @@ namespace FastFood.Controllers
         [HttpPost]
         public IActionResult AddCategory(Category category)
         {
-            _logger.LogInformation("وارد شدن به متدAddCategory");
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
-                _logger.LogError("mode not valid");
-                return BadRequest(string.Join(",", errors));
-            }
-            var result = _category.AddCategory(new Category
-            {               
-                CategoryName = category.CategoryName,
-            });
+                _logger.LogInformation("وارد شدن به متدAddCategory");
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
+                    _logger.LogError("mode not valid");
+                    return BadRequest(string.Join(",", errors));
+                }
+                var result = _category.AddCategory(new Category
+                {
+                    CategoryName = category.CategoryName,
+                });
 
-            if (result.IsSucceed)
-            {
-                _logger.LogInformation("دسته بندی با موفقیت اضافه شد");
-                return Ok(result.Data);
+                if (result.IsSucceed)
+                {
+                    _logger.LogInformation("دسته بندی با موفقیت اضافه شد");
+                    return Ok(result.Data);
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -113,21 +138,29 @@ namespace FastFood.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCategory(int id, Category category)
         {
-            _logger.LogInformation("ورود به UpdateCategory");
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
-                _logger.LogError("The Model state not valid");
-                return BadRequest(string.Join(",", errors));
+                _logger.LogInformation("ورود به UpdateCategory");
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
+                    _logger.LogError("The Model state not valid");
+                    return BadRequest(string.Join(",", errors));
+                }
+                var result = _category.UpdateCategory(category);
+                if (result.IsSucceed)
+                {
+                    _logger.LogInformation("دسته بندی اپدیت شد", category.CategoryID);
+                    return Ok(result.Data);
+                }
+                _logger.LogError("دسته بندی اپدیت نشد", category.CategoryID);
+                return BadRequest(string.Join(",", result.Errors));
             }
-            var result = _category.UpdateCategory(category);
-            if (result.IsSucceed)
+            catch (Exception)
             {
-                _logger.LogInformation("دسته بندی اپدیت شد",category.CategoryID);
-                return Ok(result.Data);
+
+                throw;
             }
-            _logger.LogError("دسته بندی اپدیت نشد", category.CategoryID);
-            return BadRequest(string.Join(",", result.Errors));
         }
         /// <summary>
         /// 
@@ -138,19 +171,27 @@ namespace FastFood.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id, Category category)
         {
-            var result = _category.DeleteCategory(id);
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null)
+                var result = _category.DeleteCategory(id);
+                if (result.IsSucceed)
                 {
-                    _logger.LogInformation("دسته بندی حذف شد", category.CategoryID);
-                    return Ok(result.Data);
-                }
-                _logger.LogError("دسته بندی قبلا حذف شده است", category.CategoryID);
+                    if (result.Data != null)
+                    {
+                        _logger.LogInformation("دسته بندی حذف شد", category.CategoryID);
+                        return Ok(result.Data);
+                    }
+                    _logger.LogError("دسته بندی قبلا حذف شده است", category.CategoryID);
 
-                return NotFound();
+                    return NotFound();
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

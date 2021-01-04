@@ -36,42 +36,50 @@ namespace WebFastFood.Controllers
         [HttpPost]
         public IActionResult Login(CustomersDto login)
         {
-            _logger.LogError("متد Login فراخوانی شد");
-            if (!ModelState.IsValid)
+            try
             {
-                _logger.LogError("The Model is not valid");
-                return View(login);
-            }
-            var _client = _httpClientFactory.CreateClient("FastFoodClient");
-            var jsonBody = JsonConvert.SerializeObject(login);
-            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            var response = _client.PostAsync("/Api/Authen", content).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var token = response.Content.ReadAsAsync<TokenModel>().Result;
-                var claims = new List<Claim>()
+                _logger.LogError("متد Login فراخوانی شد");
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("The Model is not valid");
+                    return View(login);
+                }
+                var _client = _httpClientFactory.CreateClient("FastFoodClient");
+                var jsonBody = JsonConvert.SerializeObject(login);
+                var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                var response = _client.PostAsync("/Api/Authen", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var token = response.Content.ReadAsAsync<TokenModel>().Result;
+                    var claims = new List<Claim>()
                     {
                          new Claim(ClaimTypes.NameIdentifier,login.Mobile),
                          new Claim(ClaimTypes.Name,login.Mobile),
                          new Claim("AccessToken",token.Token)
                     };
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var prinsipal = new ClaimsPrincipal(identity);
-                var properties = new AuthenticationProperties
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var prinsipal = new ClaimsPrincipal(identity);
+                    var properties = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        AllowRefresh = true
+                    };
+                    HttpContext.SignInAsync(prinsipal, properties);
+                    _logger.LogError("کاربر توکن را دریافت و وارد شد");
+
+                    return Redirect("/Customer/Index");
+
+                }
+                else
                 {
-                    IsPersistent = true,
-                    AllowRefresh = true
-                };
-                HttpContext.SignInAsync(prinsipal, properties);
-                _logger.LogError("کاربر توکن را دریافت و وارد شد");
-
-                return Redirect("/Customer/Index");
-
+                    ModelState.AddModelError("Mobile", "User not valid or Wrong password");
+                    return View(login);
+                }
             }
-            else
+            catch (Exception)
             {
-                ModelState.AddModelError("Mobile", "User not valid or Wrong password");
-                return View(login);
+
+                throw;
             }
         }
     }

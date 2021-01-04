@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,25 @@ namespace WebFastFood.Controllers
     public class ProductController : Controller
     {
         IProduct _product;
-        public ProductController(IProduct product)
+        ILogger<ProductController> _logger;
+        public ProductController(IProduct product, ILogger<ProductController> logger)
         {
             _product = product;
         }
         public IActionResult Product()
         {
-            string token = User.FindFirst("AccessToken").Value;
-            return View(_product.GetAllProduct(token));
+            try
+            {
+                _logger.LogWarning("اجرای متد لیست محصولات");
+                string token = User.FindFirst("AccessToken").Value;
+                _logger.LogInformation("دریافت توکن ونمایش لیست به کاربر");
+                return View(_product.GetAllProduct(token));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public IActionResult Create()
@@ -32,18 +44,40 @@ namespace WebFastFood.Controllers
 
         public IActionResult Create(ProductDto customers, bool res)
         {
-            _product.AddProduct(customers, res);
-            if (res == false)
-                return BadRequest("product Name is Duplicate");
-            return RedirectToAction("Index");
+            try
+            {
+                _logger.LogWarning("اجرا متد ایجاد محصول جدید");
+                _product.AddProduct(customers, res);
+                if (res == false)
+                {
+                    _logger.LogError("نام محصول تکراری است");
+                    return BadRequest("product Name is Duplicate");
+                }
+                _logger.LogInformation("محصول ایجاد شد");
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        
-        public IActionResult SubmitOrder(ProductDto productDto,int numberOfOrder, bool res,int id)
+
+        public IActionResult SubmitOrder(ProductDto productDto, int numberOfOrder, bool res, int id)
         {
-            string currentIdUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _product.AddSubmitOrder(productDto,res);
-            return View();
+            try
+            {
+                _logger.LogWarning("اجرای متد جمع محصولات");
+                string currentIdUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _product.AddSubmitOrder(productDto, res);
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }

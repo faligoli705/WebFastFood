@@ -41,14 +41,14 @@ namespace FastFood.Controllers
         [HttpGet]
         public IActionResult CustomerList()
         {
-            _logger.LogError("اجرای متد CustomerList");
+            _logger.LogWarning("اجرای متد CustomerList");
             string mob= User.FindFirstValue(ClaimTypes.Name);
             var result = _customer.Listcustomers(mob);
             if (result.IsSucceed)
             {
                 if (result.Data != null && result.Data.Any())
                 {
-                    _logger.LogError("دریافت لیست کاربرها");
+                    _logger.LogInformation("دریافت لیست کاربرها");
                     return Ok(result.Data);
                 }
                 else {
@@ -67,6 +67,7 @@ namespace FastFood.Controllers
         [HttpGet("{id}")]
         public IActionResult CustomerById(int id)
         {
+            try { 
             _logger.LogInformation("اجرای متد CustomerById");
             var result = _customer.GetCustomerById(id);
             if (result.IsSucceed)
@@ -83,6 +84,12 @@ namespace FastFood.Controllers
                 }
             }
             return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 
@@ -94,6 +101,7 @@ namespace FastFood.Controllers
         [HttpPost]
         public IActionResult AddCustomer(Customers customers)
         {
+            try { 
             _logger.LogInformation("اجرای متد AddCustomer");
             if (!ModelState.IsValid)
             {
@@ -118,6 +126,12 @@ namespace FastFood.Controllers
                 return Ok(result.Data);
             }
             return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -129,6 +143,7 @@ namespace FastFood.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCustomer(int id, Customers customers)
         {
+            try { 
             _logger.LogInformation("اجرای متد UpdateCustomer");
             if (!ModelState.IsValid)
             {
@@ -144,6 +159,12 @@ namespace FastFood.Controllers
             }
             _logger.LogError("دستورات نامشخص");
             return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -154,6 +175,7 @@ namespace FastFood.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
         {
+            try { 
             _logger.LogWarning("اجرای متد DeleteCustomer");
             var result = _customer.DeleteCustomer(id);
             if (result.IsSucceed)
@@ -168,6 +190,12 @@ namespace FastFood.Controllers
                 return NotFound();
             }
             return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 

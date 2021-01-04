@@ -24,7 +24,7 @@ namespace FastFood.Controllers
         /// 
         /// </summary>
         /// <param name="product"></param>
-        public ProductController(IProduct product,ILogger<ProductController> logger)
+        public ProductController(IProduct product, ILogger<ProductController> logger)
         {
             this._product = product;
             _logger = logger;
@@ -37,15 +37,23 @@ namespace FastFood.Controllers
         [HttpGet]
         public IActionResult ProductList()
         {
-            _logger.LogWarning("اجرای متد PRoductList");
-            var result = _product.ListProduct();
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null && result.Data.Any())
-                    return Ok(result.Data);
-                return NotFound();
+                _logger.LogWarning("اجرای متد PRoductList");
+                var result = _product.ListProduct();
+                if (result.IsSucceed)
+                {
+                    if (result.Data != null && result.Data.Any())
+                        return Ok(result.Data);
+                    return NotFound();
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -56,15 +64,22 @@ namespace FastFood.Controllers
         [HttpGet("{id}")]
         public IActionResult ProductById(int id)
         {
-            var result = _product.GetProductById(id);
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null)
-                    return Ok(result.Data);
-                return NotFound();
+                var result = _product.GetProductById(id);
+                if (result.IsSucceed)
+                {
+                    if (result.Data != null)
+                        return Ok(result.Data);
+                    return NotFound();
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
 
+                throw;
+            }
         }
 
         /// <summary>
@@ -75,46 +90,71 @@ namespace FastFood.Controllers
         [HttpPost]
         public IActionResult AddProduct(Products Products)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
-                return BadRequest(string.Join(",", errors));
-            }
-            var result = _product.AddProduct(new Products
-            {
-                ProductName = Products.ProductName,
-                CategoryId = Products.CategoryId,
-                UnitPrice = Products.UnitPrice
-            });
+                _logger.LogWarning("اجرای متد اضاقه کردن محصولات");
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
+                    _logger.LogError("Model state not valid");
+                    return BadRequest(string.Join(",", errors));
+                }
+                var result = _product.AddProduct(new Products
+                {
+                    ProductName = Products.ProductName,
+                    CategoryId = Products.CategoryId,
+                    UnitPrice = Products.UnitPrice
+                });
 
-            if (result.IsSucceed)
-                return Ok(result.Data);
-            return BadRequest(string.Join(",", result.Errors));
+                if (result.IsSucceed)
+                {
+                    _logger.LogInformation("محصول اضافه شد");
+                    return Ok(result.Data);
+                }
+                return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-      
-        [HttpPost("SubmitOrder",Name = "AddSubmitOrder")]
+
+        [HttpPost("SubmitOrder", Name = "AddSubmitOrder")]
         public IActionResult AddSubmitOrder(Products Products)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
-                return BadRequest(string.Join(",", errors));
-            }
-            var result = _product.AddProduct(new Products
-            {
-                ProductName = Products.ProductName,
-                CategoryId = Products.CategoryId,
-                UnitPrice = Products.UnitPrice
-            });
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
+                    _logger.LogError("Model state not valid");
+                    return BadRequest(string.Join(",", errors));
+                }
+                var result = _product.AddProduct(new Products
+                {
+                    ProductName = Products.ProductName,
+                    CategoryId = Products.CategoryId,
+                    UnitPrice = Products.UnitPrice
+                });
 
-            if (result.IsSucceed)
-                return Ok(result.Data);
-            return BadRequest(string.Join(",", result.Errors));
+                if (result.IsSucceed)
+                {
+                    _logger.LogInformation("جمع بندی قیمت محصول با موفقیت انجام شد");
+                    return Ok(result.Data);
+                }
+                return BadRequest(string.Join(",", result.Errors));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -126,15 +166,28 @@ namespace FastFood.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, Products Products)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
-                return BadRequest(string.Join(",", errors));
+                _logger.LogWarning("اجرای متد بروز رسانی محصول");
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
+                    _logger.LogError("Model Stateis not valid");
+                    return BadRequest(string.Join(",", errors));
+                }
+                var result = _product.UpdateProduct(Products);
+                if (result.IsSucceed)
+                {
+                    _logger.LogInformation("با موفیقت محصول بروزرسانی شد");
+                    return Ok(result.Data);
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            var result = _product.UpdateProduct(Products);
-            if (result.IsSucceed)
-                return Ok(result.Data);
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -146,14 +199,30 @@ namespace FastFood.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id, Products Products)
         {
-            var result = _product.DeleteProduct(id);
-            if (result.IsSucceed)
+            try
             {
-                if (result.Data != null)
-                    return Ok(result.Data);
-                return NotFound();
+                _logger.LogWarning("اجرای متد حذف محصول");
+                var result = _product.DeleteProduct(id);
+                if (result.IsSucceed)
+                {
+                    if (result.Data != null)
+                    {
+                        _logger.LogInformation("محصول با موفقیت حذف شد");
+                        return Ok(result.Data);
+                    }
+                    else
+                    {
+                        _logger.LogError("محصولی برای حذف یافت نشد یا قبلا حذف شده");
+                        return NotFound();
+                    }
+                }
+                return BadRequest(string.Join(",", result.Errors));
             }
-            return BadRequest(string.Join(",", result.Errors));
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
