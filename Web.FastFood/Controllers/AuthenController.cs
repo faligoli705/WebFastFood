@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebFastFood.Models;
 
@@ -16,10 +17,12 @@ namespace WebFastFood.Controllers
 {
     public class AuthenController : Controller
     {
+        private readonly ILogger<AuthenController> _logger;
         IHttpClientFactory _httpClientFactory;
-        public AuthenController(IHttpClientFactory httpClientFactory)
+        public AuthenController(IHttpClientFactory httpClientFactory, ILogger<AuthenController> logger)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
         public IActionResult Login()
         {
@@ -33,8 +36,12 @@ namespace WebFastFood.Controllers
         [HttpPost]
         public IActionResult Login(CustomersDto login)
         {
+            _logger.LogError("متد Login فراخوانی شد");
             if (!ModelState.IsValid)
+            {
+                _logger.LogError("The Model is not valid");
                 return View(login);
+            }
             var _client = _httpClientFactory.CreateClient("FastFoodClient");
             var jsonBody = JsonConvert.SerializeObject(login);
             var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
@@ -56,6 +63,8 @@ namespace WebFastFood.Controllers
                     AllowRefresh = true
                 };
                 HttpContext.SignInAsync(prinsipal, properties);
+                _logger.LogError("کاربر توکن را دریافت و وارد شد");
+
                 return Redirect("/Customer/Index");
 
             }

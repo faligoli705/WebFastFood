@@ -1,6 +1,7 @@
 ﻿using FastFood.DataLayer.Services.Contracts;
 using FastFood.DomainClass.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,17 @@ namespace FastFood.Controllers
     public class ProductController : Controller
     {
         private readonly IProduct _product;
+        private readonly ILogger<ProductController> _logger;
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="product"></param>
-        public ProductController(IProduct product)
+        public ProductController(IProduct product,ILogger<ProductController> logger)
         {
             this._product = product;
+            _logger = logger;
         }
 
         /// <summary>
@@ -33,6 +37,7 @@ namespace FastFood.Controllers
         [HttpGet]
         public IActionResult ProductList()
         {
+            _logger.LogWarning("اجرای متد PRoductList");
             var result = _product.ListProduct();
             if (result.IsSucceed)
             {

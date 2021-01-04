@@ -19,7 +19,7 @@
             
             </summary>
         </member>
-        <member name="M:FastFood.Controllers.AuthenController.#ctor(FastFood.DataLayer.Services.Contracts.IAuthen)">
+        <member name="M:FastFood.Controllers.AuthenController.#ctor(FastFood.DataLayer.Services.Contracts.IAuthen,Microsoft.Extensions.Logging.ILogger{FastFood.Controllers.AuthenController})">
             <summary>
             
             </summary>
@@ -37,7 +37,7 @@
             
             </summary>
         </member>
-        <member name="M:FastFood.Controllers.CategoryController.#ctor(FastFood.DataLayer.Services.Contracts.ICategory)">
+        <member name="M:FastFood.Controllers.CategoryController.#ctor(FastFood.DataLayer.Services.Contracts.ICategory,Microsoft.Extensions.Logging.ILogger{FastFood.Controllers.CategoryController})">
             <summary>
             
             </summary>
@@ -84,7 +84,7 @@
             
             </summary>
         </member>
-        <member name="M:FastFood.Controllers.CustomerController.#ctor(FastFood.DataLayer.Services.Contracts.ICustomer)">
+        <member name="M:FastFood.Controllers.CustomerController.#ctor(FastFood.DataLayer.Services.Contracts.ICustomer,Microsoft.Extensions.Logging.ILogger{FastFood.Controllers.CustomerController})">
             <summary>
             
             </summary>
@@ -223,6 +223,18 @@
             </summary>
             <param name="id"></param>
             <param name="storeInvoicings"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FastFood.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FastFood.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
             <returns></returns>
         </member>
         <member name="T:FastFood.Startup">

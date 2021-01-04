@@ -1,6 +1,7 @@
 ﻿using FastFood.DataLayer.Services.Contracts;
 using FastFood.DomainClass.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,15 @@ namespace FastFood.Controllers
     {       
         
         private readonly ICategory _category;
+        private readonly ILogger<CategoryController> _logger;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="category"></param>
-        public CategoryController(ICategory category)
+        public CategoryController(ICategory category, ILogger<CategoryController> logger)
         {
             _category = category;
+            _logger = logger;
         }
 
         // GET: Categories
@@ -32,12 +35,20 @@ namespace FastFood.Controllers
         [HttpGet]
         public IActionResult CategoryList()
         {
+            
             var result = _category.ListCategory();
             if (result.IsSucceed)
             {
                 if (result.Data != null && result.Data.Any())
+                {
+                    _logger.LogInformation("نمایش لیست محصولات");
                     return Ok(result.Data);
-                return NotFound();
+                }
+                else
+                {
+                    return NotFound();
+                    _logger.LogError("محصولی یافت نشد");
+                }
             }
             return BadRequest(string.Join(",", result.Errors));
         }
@@ -53,8 +64,14 @@ namespace FastFood.Controllers
             if (result.IsSucceed)
             {
                 if (result.Data != null)
+                {
+                    _logger.LogError(" نمایش دسته بندی ها بر اساس ایدی");
                     return Ok(result.Data);
-                return NotFound();
+                }
+               else {
+                    _logger.LogError("دسته بندی یافت نشد");
+                    return NotFound();
+                }
             }
             return BadRequest(string.Join(",", result.Errors));
 
@@ -67,18 +84,23 @@ namespace FastFood.Controllers
         [HttpPost]
         public IActionResult AddCategory(Category category)
         {
+            _logger.LogInformation("وارد شدن به متدAddCategory");
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(a => a.Errors).Select(a => a.ErrorMessage);
+                _logger.LogError("mode not valid");
                 return BadRequest(string.Join(",", errors));
             }
             var result = _category.AddCategory(new Category
-            {
-                CategoryName = category.CategoryName
+            {               
+                CategoryName = category.CategoryName,
             });
 
             if (result.IsSucceed)
+            {
+                _logger.LogInformation("دسته بندی با موفقیت اضافه شد");
                 return Ok(result.Data);
+            }
             return BadRequest(string.Join(",", result.Errors));
         }
 
@@ -91,14 +113,20 @@ namespace FastFood.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCategory(int id, Category category)
         {
+            _logger.LogInformation("ورود به UpdateCategory");
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
+                _logger.LogError("The Model state not valid");
                 return BadRequest(string.Join(",", errors));
             }
             var result = _category.UpdateCategory(category);
             if (result.IsSucceed)
+            {
+                _logger.LogInformation("دسته بندی اپدیت شد",category.CategoryID);
                 return Ok(result.Data);
+            }
+            _logger.LogError("دسته بندی اپدیت نشد", category.CategoryID);
             return BadRequest(string.Join(",", result.Errors));
         }
         /// <summary>
@@ -114,7 +142,12 @@ namespace FastFood.Controllers
             if (result.IsSucceed)
             {
                 if (result.Data != null)
+                {
+                    _logger.LogInformation("دسته بندی حذف شد", category.CategoryID);
                     return Ok(result.Data);
+                }
+                _logger.LogError("دسته بندی قبلا حذف شده است", category.CategoryID);
+
                 return NotFound();
             }
             return BadRequest(string.Join(",", result.Errors));
