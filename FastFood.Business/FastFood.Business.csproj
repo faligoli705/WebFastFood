@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NLog.Config" Version="4.7.6" />
+    <PackageReference Include="NLog.Targets.Sentry3" Version="4.0.35" />
+  </ItemGroup>
+
 </Project>

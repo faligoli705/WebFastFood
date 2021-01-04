@@ -22,8 +22,8 @@ namespace FastFood.DataLayer.Services.Repository
 
         public Customers ListcustomersLogin(string mobile, int passwordCustomer)
         {
-            return _context.Customers.Where(
-                x => !x.IsDelete && x.Mobile == mobile
+            return _context.Customers.Where(x => !x.IsDelete
+                 && x.Mobile == mobile
                 && x.PasswordCustomer == passwordCustomer
                 ).SingleOrDefault();
         }
