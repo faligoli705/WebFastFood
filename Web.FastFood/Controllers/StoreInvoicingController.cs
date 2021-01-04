@@ -22,7 +22,7 @@ namespace WebFastFood.Controllers
             
             string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var id1 = Convert.ToInt32(currentUserId);
-            _customer.AddCustomer(id, id1);
+            _customer.AddStoreInvoicing(id, id1);
             return RedirectToAction("Index");
         }
     }
