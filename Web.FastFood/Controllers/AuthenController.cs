@@ -63,7 +63,6 @@ namespace WebFastFood.Controllers
             {
                 ModelState.AddModelError("Mobile", "User not valid or Wrong password");
                 return View(login);
-
             }
         }
     }

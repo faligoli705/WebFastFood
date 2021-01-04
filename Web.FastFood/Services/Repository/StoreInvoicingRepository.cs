@@ -21,19 +21,13 @@ namespace WebFastFood.Services.Repository
         }
         public void AddStoreInvoicing(string productId, int currentUserId)
         {
-            var d = new StoreInvoicingDto
-            {
-                CustomerId = currentUserId
 
+            var value = new
+            {
+                productId = productId,
+                currentUserId = currentUserId
             };
-            //var value = new
-            //{
-            //    productId = productId,
-            //    currentUserId = currentUserId
-            //};
-            // string queryString = "productId=" + productId + "&currentUserId=" + currentUserId;
-            //formVars.Add("productId", "currentUserId");
-            string jsonstoreInvoicing = JsonConvert.SerializeObject(d);
+            string jsonstoreInvoicing = JsonConvert.SerializeObject(value);
             StringContent content = new StringContent(jsonstoreInvoicing, Encoding.UTF8, "application/json");
             var result = _client.PostAsJsonAsync(apiUrl, content).Result;
             var isSuccessStatusCode = result.IsSuccessStatusCode;
