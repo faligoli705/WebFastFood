@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebFastFood.Services.Contracts;
+using WebFastFood.Services.Repository;
 
 namespace Web.FastFood
 {
@@ -27,7 +29,7 @@ namespace Web.FastFood
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-
+            InitServices(services);
             services.AddControllersWithViews();
             services.AddHttpClient("FastFoodClient", client =>
             {
@@ -75,6 +77,15 @@ namespace Web.FastFood
                     name: "default",
                     pattern: "{controller=Authen}/{action=Login}/{id?}");
             });
+        }
+
+        public void InitServices(IServiceCollection services)
+        {
+            services.AddTransient<ICustomer, CustomerRepository>();
+            services.AddTransient<ICategory, CategoryRepository>();
+            services.AddTransient<IProduct, ProductRepository>();
+            services.AddTransient<IStoreInvoicing, StoreInvoicingRepository>();
+            services.AddTransient<IStoreInvoicingDetails, StoreInvoicingDetailsRepository>();
         }
     }
 }

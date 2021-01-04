@@ -266,5 +266,11 @@
             <param name="app"></param>
             <param name="env"></param>
         </member>
+        <member name="M:FastFood.Startup.InitServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
     </members>
 </doc>
