@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,60 +17,114 @@ namespace WebFastFood.Services.Repository
     {
         string apiUrl = "http://localhost:64467/api/Product";
         HttpClient _client;
+        ILogger<ProductRepository> _logger;
 
-        public ProductRepository()
+        public ProductRepository(ILogger<ProductRepository> logger)
         {
             _client = new HttpClient();
+            _logger = logger;
         }
 
         public void AddProduct(ProductDto productDto, bool res)
         {
-            string jsonProduct = JsonConvert.SerializeObject(productDto);
-            StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
-            var result = _client.PostAsync(apiUrl, content).Result;
-            var isSuccessStatusCode = result.IsSuccessStatusCode;
-            res = isSuccessStatusCode;
-            if (res == false)
+            try
+            {
+                _logger.LogWarning("اضافه کردن محصول");
+                string jsonProduct = JsonConvert.SerializeObject(productDto);
+                StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
+                var result = _client.PostAsync(apiUrl, content).Result;
+                var isSuccessStatusCode = result.IsSuccessStatusCode;
                 res = isSuccessStatusCode;
+                if (res == false)
+                    res = isSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
-        public bool  AddSubmitOrder(ProductDto productDto, bool res)
+        public bool AddSubmitOrder(ProductDto productDto, bool res)
         {
-            string jsonProduct =  JsonConvert.SerializeObject(productDto);
-            StringContent content =  new StringContent(jsonProduct, Encoding.UTF8, "application/json");
-            var result =  _client.PostAsync(apiUrl, content).Result;
-            var isSuccessStatusCode =  result.IsSuccessStatusCode;
-            res =  isSuccessStatusCode;
-            if (res == false)
-                res =  isSuccessStatusCode;
-            return  res;
+            try
+            {
+                _logger.LogWarning("اضافه کردن جمع بندی محصولات");
+                string jsonProduct = JsonConvert.SerializeObject(productDto);
+                StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
+                var result = _client.PostAsync(apiUrl, content).Result;
+                var isSuccessStatusCode = result.IsSuccessStatusCode;
+                res = isSuccessStatusCode;
+                if (res == false)
+                    res = isSuccessStatusCode;
+                return res;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public void DeleteProduct(int productId)
         {
-            var resuslt = _client.DeleteAsync(apiUrl + "/" + productId).Result;
+            try
+            {
+                _logger.LogWarning("اجرای متد حذف محصول");
+                var resuslt = _client.DeleteAsync(apiUrl + "/" + productId).Result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public List<ProductDto> GetAllProduct(string token)
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var result = _client.GetStringAsync(apiUrl).Result;
-            List<ProductDto> list = JsonConvert.DeserializeObject<List<ProductDto>>(result);
-            return list;
+            try
+            {
+                _logger.LogWarning("گرفتن همه محصولات");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = _client.GetStringAsync(apiUrl).Result;
+                List<ProductDto> list = JsonConvert.DeserializeObject<List<ProductDto>>(result);
+                return list;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public ProductDto GetProductById(int productId)
         {
-            var result = _client.GetStringAsync(apiUrl + "/" + productId).Result;
-            ProductDto product = JsonConvert.DeserializeObject<ProductDto>(result);
-            return product;
+            try
+            {
+                _logger.LogWarning("گرفتن محصول براساس ایدی");
+                var result = _client.GetStringAsync(apiUrl + "/" + productId).Result;
+                ProductDto product = JsonConvert.DeserializeObject<ProductDto>(result);
+                return product;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public void UpdateProduct(ProductDto productDto)
         {
-            string jsonProduct = JsonConvert.SerializeObject(productDto);
-            StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
-            var result = _client.PutAsync(apiUrl + "/" + productDto.ProductID, content).Result;
-            throw new NotImplementedException();
+            try
+            {
+                _logger.LogWarning("بروزرسانی محصول");
+                string jsonProduct = JsonConvert.SerializeObject(productDto);
+                StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
+                var result = _client.PutAsync(apiUrl + "/" + productDto.ProductID, content).Result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
