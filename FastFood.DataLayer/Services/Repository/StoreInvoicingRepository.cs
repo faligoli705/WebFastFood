@@ -23,7 +23,7 @@ namespace FastFood.DataLayer.Services.Repository
             var errors = new List<string>();
             if (errors.Any())
                 return ServiceResult<StoreInvoicing>.Failed(errors);
-            StoreInvoicing storeInvoicing = _context.StoreInvoicings.SingleOrDefault(s => s.CustomerId == 1 && s.StoreInvoicingStatus==1);
+            StoreInvoicing storeInvoicing = _context.StoreInvoicings.SingleOrDefault(s => s.CustomerId == 1 && s.StoreInvoicingStatus!=1);
             if (storeInvoicing == null)
             {
                 storeInvoicing = new StoreInvoicing
@@ -77,8 +77,9 @@ namespace FastFood.DataLayer.Services.Repository
                     details.Qty += 1;
                     _context.Update(details);
                 }
+                
                 var result = _context.SaveChanges();
-
+                UpdateTotalAmount(storeInvoicing.InvoicingDetailId);
                 if (result > 0)
                     return ServiceResult<StoreInvoicing>.Succeed(storeInvoicing);
 
@@ -87,6 +88,14 @@ namespace FastFood.DataLayer.Services.Repository
 
             return ServiceResult<StoreInvoicing>.Failed(new List<string> { "Data not inserted!!!" });
 
+        }
+
+        public void UpdateTotalAmount(int productId)
+        {
+            var product = _context.StoreInvoicingDetails.Find(productId);
+            product.TotalAmount = _context.StoreInvoicingDetails.Where(s => s.ProductId == product.ProductId).Select(d => d.Qty * d.CurrentPrice).Sum();
+            _context.Update(product);
+            _context.SaveChanges();
         }
 
         public ServiceResult<StoreInvoicing> DeletestoreInvoicing(int id)
