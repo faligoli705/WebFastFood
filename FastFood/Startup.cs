@@ -47,6 +47,8 @@ namespace FastFood
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+
+            #region AddSwaggerGen
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo
@@ -55,37 +57,35 @@ namespace FastFood
                 });
                 swagger.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), @"bin\Debug\net5.0", "FastFood.xml"));
             });
+            #endregion
 
-            services.AddControllersWithViews();
-           // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddMvc();
-
-
-
+            #region AddDbContext
             services.AddDbContext<FastFoodContext>(options =>
             {
-            // services.AddDbContext<FastFoodContext>(options => { options.UseSqlServer
-            //("Data Source=DESKTOP-9AQA9OL;Initial Catalog=FastFood;Integrated Security=False;User Id=sa;Password=123456"); });
+                // services.AddDbContext<FastFoodContext>(options => { options.UseSqlServer
+                //("Data Source=DESKTOP-9AQA9OL;Initial Catalog=FastFood;Integrated Security=False;User Id=sa;Password=123456"); });
+                options.UseSqlServer(Configuration.GetConnectionString("FastFoodConnection"));
 
-             options.UseSqlServer(Configuration.GetConnectionString("FastFoodConnection"));
-               
             });
+            #endregion
+
+            #region Add Controller / Services 
+            services.AddControllersWithViews();
+            // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc();
             services.AddControllersWithViews();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-            //services.AddScoped<IStoreInvoicing, Factors>();
-            services.AddTransient<ICustomer, CustomersRepository>();
-            services.AddTransient<IStoreInvoicingDetails, StoreInvoicingDetailsRepository>();
-            services.AddTransient<IStoreInvoicing, StoreInvoicingRepository>();
-            services.AddTransient<ICategory, CategoryRepository>();
-            services.AddTransient<IProduct, ProductsRepository>();
-            services.AddTransient<AutomapperConfig>();
-            services.AddTransient<IAuthen, AuthenRepository>();
+
             services.AddControllers();
             services.AddResponseCaching();
 
             services.AddMemoryCache();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            #endregion
 
+            InitServices(services);
+
+            #region Jwt
             //Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -95,8 +95,8 @@ namespace FastFood
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer= "http://localhost:64467/",
-                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890 OurVerifyDotin"))
+                    ValidIssuer = "http://localhost:64467/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890 OurVerifyDotin"))
                 };
             });
             services.AddCors(options =>
@@ -105,7 +105,7 @@ namespace FastFood
                  {
                      builder.AllowAnyOrigin()
                      .AllowAnyHeader()
-                     .AllowAnyMethod()                     
+                     .AllowAnyMethod()
                      .WithOrigins("http://localhost:64467")
                      //.WithOrigins("http://localhost:56240/")
                      .SetIsOriginAllowed(origin => true)
@@ -114,11 +114,11 @@ namespace FastFood
 
                  });
             });
-        }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            #endregion
+        }
         /// <summary>
-        /// 
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
@@ -126,7 +126,6 @@ namespace FastFood
         {
             if (env.IsDevelopment())
             {
-
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -141,13 +140,10 @@ namespace FastFood
             app.UseCors("EnableCors");
             app.UseAuthentication();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
             app.UseResponseCaching();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -163,6 +159,20 @@ namespace FastFood
                     name: "default",
                     pattern: "{controller=Customer}/{action=Index}/{id?}");
             });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        public void InitServices(IServiceCollection services)
+        {
+            services.AddTransient<ICustomer, CustomersRepository>();
+            services.AddTransient<IStoreInvoicingDetails, StoreInvoicingDetailsRepository>();
+            services.AddTransient<IStoreInvoicing, StoreInvoicingRepository>();
+            services.AddTransient<ICategory, CategoryRepository>();
+            services.AddTransient<IProduct, ProductsRepository>();
+            services.AddTransient<AutomapperConfig>();
+            services.AddTransient<IAuthen, AuthenRepository>();
         }
     }
 }

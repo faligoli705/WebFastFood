@@ -3,16 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebFastFood.Services.Contracts;
 using WebFastFood.Services.Repository;
 
 namespace WebFastFood.Controllers
 {
     public class StoreInvoicingDetailsController : Controller
     {
-        StoreInvoicingDetailsRepository _storeInvoicingDetails;
-        public StoreInvoicingDetailsController()
+        IStoreInvoicingDetails _storeInvoicingDetails;
+        public StoreInvoicingDetailsController(IStoreInvoicingDetails storeInvoicingDetail)
         {
-            _storeInvoicingDetails = new StoreInvoicingDetailsRepository();
+            _storeInvoicingDetails = storeInvoicingDetail;
         }
 
         public IActionResult StoreInvoicingDetails()

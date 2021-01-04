@@ -8,17 +8,17 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebFastFood.Models;
-using WebFastFood.Services.Repository;
+using WebFastFood.Services.Contracts;
 
 namespace WebFastFood.Controllers
 {
     [Authorize]
     public class CustomerController : Controller
     {
-        CustomerRepository _customer;
-        public CustomerController()
+        ICustomer _customer;
+        public CustomerController(ICustomer customer)
         {
-            _customer = new CustomerRepository();
+            _customer = customer;
         }
 
         public IActionResult Index()

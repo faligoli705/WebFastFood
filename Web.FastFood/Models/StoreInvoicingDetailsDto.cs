@@ -1,4 +1,4 @@
-﻿using FastFood.DataLayer.Model;
+﻿using FastFood.DomainClass.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

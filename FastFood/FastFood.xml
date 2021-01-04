@@ -130,7 +130,7 @@
             
             </summary>
         </member>
-        <member name="M:FastFood.Controllers.ProductController.#ctor(FastFood.DataLayer.Services.Contracts.IProduct)">
+        <member name="M:FastFood.Controllers.ProductController.#ctor(FastFood.DataLayer.Services.Contracts.IProduct,Microsoft.Extensions.Logging.ILogger{FastFood.Controllers.ProductController})">
             <summary>
             
             </summary>
@@ -261,7 +261,7 @@
         </member>
         <member name="M:FastFood.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
-            
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             </summary>
             <param name="app"></param>
             <param name="env"></param>

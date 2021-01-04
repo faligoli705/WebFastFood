@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using WebFastFood.Models;
+using WebFastFood.Services.Contracts;
 using WebFastFood.Services.Repository;
 
 namespace WebFastFood.Controllers
@@ -13,10 +14,10 @@ namespace WebFastFood.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        ProductRepository _product;
-        public ProductController()
+        IProduct _product;
+        public ProductController(IProduct product)
         {
-            _product = new ProductRepository();
+            _product = product;
         }
         public IActionResult Product()
         {

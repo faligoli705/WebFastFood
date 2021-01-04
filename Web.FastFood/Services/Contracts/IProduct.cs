@@ -11,6 +11,7 @@ namespace WebFastFood.Services.Contracts
         List<ProductDto> GetAllProduct(string token);
         ProductDto GetProductById(int productId);
         void AddProduct(ProductDto productDto, bool res);
+        bool AddSubmitOrder(ProductDto productDto, bool res);
         void UpdateProduct(ProductDto productDto);
         void DeleteProduct(int productId);
     }

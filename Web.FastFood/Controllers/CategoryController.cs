@@ -5,17 +5,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using WebFastFood.Models;
-using WebFastFood.Services.Repository;
+using WebFastFood.Services.Contracts;
 
 namespace WebFastFood.Controllers
 {
     [Authorize]
     public class CategoryController : Controller
     {
-        CategoryRepository _category;
-        public CategoryController()
+        ICategory _category;
+        public CategoryController(ICategory category)
         {
-            _category = new CategoryRepository();
+            _category = category;
         }
         public IActionResult ListCategory()
         {
