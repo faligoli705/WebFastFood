@@ -7,7 +7,7 @@ namespace WebFastFood.Services.Contracts
 {
    public interface IStoreInvoicing
     {
-         void  AddCustomer( string productId, int currentUserId);
+         void AddStoreInvoicing( string productId, int currentUserId);
 
     }
 }

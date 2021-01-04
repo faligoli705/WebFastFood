@@ -19,7 +19,7 @@ namespace WebFastFood.Services.Repository
             _client = new HttpClient();
 
         }
-        public void AddCustomer(string productId, int currentUserId)
+        public void AddStoreInvoicing(string productId, int currentUserId)
         {
             var d = new StoreInvoicingDto
             {
