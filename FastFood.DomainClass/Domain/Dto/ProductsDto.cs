@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FastFood.DomainClass.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace FastFood.DomainClass.Domain.Dto
 {
-    public class ProductsDto
+    public class ProductsDto : BaseEntity<Int32>
     {
-        public Int32 ProductID { get; set; }
+        //public Int32 ProductID { get; set; }
         public string ProductName { get; set; }
         public Int32 CategoryId { get; set; }
         public int NumberOfOrders { get; set; }

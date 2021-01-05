@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastFood.DomainClass.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace WebFastFood.Models
 {
-    public class ProductDto
+    public class ProductDto : BaseEntity<Int32>
     { 
-            public int ProductID { get; set; }
+            //public int ProductID { get; set; }
             [MaxLength(50)]
             public string ProductName { get; set; }
             public int CategoryId { get; set; }

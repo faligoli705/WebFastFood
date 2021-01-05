@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FastFood.DomainClass.Domain.Entities
 {
-    public class StoreInvoicingDetails :BaseEntity
+    public class StoreInvoicingDetails :BaseEntity<Int32>
     {
         [Key]
         //public Int32 InvoicingDetailId { get; set; }
@@ -17,9 +17,9 @@ namespace FastFood.DomainClass.Domain.Entities
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public int LaborCustomerItem { get; set; }
-        //public DateTime? InvoicingDetailCreateDate { get; set; }
-        //public DateTime? InvoicingDetailUpdateDate { get; set; }
-        //public DateTime? InvoicingDetailDeleteDate { get; set; }
+        public DateTime? InvoicingDetailCreateDate { get; set; }
+        public DateTime? InvoicingDetailUpdateDate { get; set; }
+        public DateTime? InvoicingDetailDeleteDate { get; set; }
         public int InvoicingDetailStatus { get; set; }
         public bool IsDelete { get; set; }
         public ICollection<Products> Products { get; set; }

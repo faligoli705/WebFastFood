@@ -42,12 +42,12 @@ namespace WebFastFood.Services.Repository
             }
         }
 
-        public CustomersDto GetCustomerById(int customerId)
+        public CustomersDto GetCustomerById(int Id)
         {
             try
             {
                 _logger.LogWarning("گرفتن کاستومر بر اساس ایدی");
-                var result = _client.GetStringAsync(apiUrl + "/" + customerId).Result;
+                var result = _client.GetStringAsync(apiUrl + "/" + Id).Result;
                 CustomersDto customer = JsonConvert.DeserializeObject<CustomersDto>(result);
                 return customer;
             }
@@ -84,7 +84,7 @@ namespace WebFastFood.Services.Repository
                 _logger.LogWarning("بروزرسانی کاستومر");
                 string jsonCustomer = JsonConvert.SerializeObject(customersDto);
                 StringContent content = new StringContent(jsonCustomer, Encoding.UTF8, "application/json");
-                var result = _client.PutAsync(apiUrl + "/" + customersDto.CustomerId, content).Result;
+                var result = _client.PutAsync(apiUrl + "/" + customersDto.Id, content).Result;
             }
             catch (Exception)
             {
@@ -92,12 +92,12 @@ namespace WebFastFood.Services.Repository
                 throw;
             }
         }
-        public void DeleteCustomer(int customerId)
+        public void DeleteCustomer(int Id)
         {
             try
             {
                 _logger.LogWarning("حذف کاستومر");
-                var resuslt = _client.DeleteAsync(apiUrl + "/" + customerId).Result;
+                var resuslt = _client.DeleteAsync(apiUrl + "/" + Id).Result;
             }
             catch (Exception)
             {

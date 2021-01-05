@@ -1,13 +1,14 @@
-﻿using FastFood.DomainClass.Domain.Entities;
+﻿using FastFood.DomainClass.Domain.Common;
+using FastFood.DomainClass.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FastFood.DomainClass.Domain.Dto
 {
-    public class StoreInvoicingDetailsDto
+    public class StoreInvoicingDetailsDto : BaseEntity<Int32>
     {
-        public Int32 InvoicingDetailId { get; set; }
+        //public Int32 InvoicingDetailId { get; set; }
         public Int32 InvoicingId { get; set; }
         public Int32 ProductId { get; set; }
         public decimal CurrentPrice { get; set; }

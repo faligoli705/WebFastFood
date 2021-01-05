@@ -1,4 +1,5 @@
-﻿using FastFood.DomainClass.Domain.Entities;
+﻿using FastFood.DomainClass.Domain.Common;
+using FastFood.DomainClass.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace WebFastFood.Models
 {
-    public class StoreInvoicingDetailsDto
+    public class StoreInvoicingDetailsDto : BaseEntity<Int32>
     {
-        public Int64 InvoicingDetailId { get; set; }
+        //public Int64 InvoicingDetailId { get; set; }
         public int InvoicingId { get; set; }
         public int ProductId { get; set; }
         public Decimal CurrentPrice { get; set; }

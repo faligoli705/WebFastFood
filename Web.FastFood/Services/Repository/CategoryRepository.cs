@@ -51,12 +51,12 @@ namespace WebFastFood.Services.Repository
             }
         }
 
-        public void DeleteCategory(int categoryId)
+        public void DeleteCategory(int Id)
         {
             try
             {
                 _loggr.LogWarning("اجرای متد حذف دسته بندی");
-                var resuslt = _client.DeleteAsync(apiUrl + "/" + categoryId).Result;
+                var resuslt = _client.DeleteAsync(apiUrl + "/" + Id).Result;
                 _loggr.LogInformation("دسته بندی با موفقیت حذف شد");
             }
             catch (Exception)
@@ -86,12 +86,12 @@ namespace WebFastFood.Services.Repository
             }
         }
 
-        public CategoryDto GetCategoryById(int categoryId)
+        public CategoryDto GetCategoryById(int Id)
         {
             try
             {
                 _loggr.LogWarning("ایجاد متد دسته بندی با ایدی");
-                var result = _client.GetStringAsync(apiUrl + "/" + categoryId).Result;
+                var result = _client.GetStringAsync(apiUrl + "/" + Id).Result;
                 CategoryDto category = JsonConvert.DeserializeObject<CategoryDto>(result);
                 return category;
             }
@@ -110,7 +110,7 @@ namespace WebFastFood.Services.Repository
                 _loggr.LogWarning("اجرای متد اپذیت دسته بندی");
                 string jsonCategory = JsonConvert.SerializeObject(categoryDto);
                 StringContent content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
-                var result = _client.PutAsync(apiUrl + "/" + categoryDto.CategoryID, content).Result;
+                var result = _client.PutAsync(apiUrl + "/" + categoryDto.Id, content).Result;
             }
             catch (Exception)
             {

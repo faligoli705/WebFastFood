@@ -28,15 +28,15 @@ namespace FastFood.DataLayer.Services.Repository
             {
                 storeInvoicing = new StoreInvoicing
                 {
-                    CustomerId = 1,//customerId,
-                    StoreInvoicingCreateDate = DateTime.Now,
+                    CustomerId = 1,//customerId,                    
+                    //StoreInvoicingCreateDate = DateTime.Now,
                     StoreInvoicingStatus = 0,                    
                     IsDelete = false
                 };
                 _context.StoreInvoicings.Add(storeInvoicing);
                 _context.StoreInvoicingDetails.Add(new StoreInvoicingDetails()
                 {
-                    InvoicingId = storeInvoicing.InvoicingId,
+                    InvoicingId = storeInvoicing.InvoicingDetailId,
                     ProductId = 1,//productId,
                     CurrentPrice = _context.Products.Find(productId).UnitPrice,
                     Qty = _context.Products.Find(productId).NumberOfOrders,
@@ -55,13 +55,13 @@ namespace FastFood.DataLayer.Services.Repository
             else
             {
                 var details = _context.StoreInvoicingDetails.SingleOrDefault(s =>
-                 s.InvoicingId == storeInvoicing.InvoicingId
+                 s.InvoicingId == storeInvoicing.InvoicingDetailId
                  && s.ProductId == 1/*productId*/);
                 if (details == null)
                 {
                     _context.StoreInvoicingDetails.Add(new StoreInvoicingDetails()
                     {
-                        InvoicingId = storeInvoicing.InvoicingId,
+                        InvoicingId = storeInvoicing.InvoicingDetailId,
                         ProductId = 1,//productId,
                         CurrentPrice = _context.Products.Find(productId).UnitPrice,
                         Qty = _context.Products.Find(productId).NumberOfOrders,
@@ -104,7 +104,7 @@ namespace FastFood.DataLayer.Services.Repository
             if (id < 0)
                 errors.Add("Nothing found or not selected");
 
-            if (_context.StoreInvoicings.Any(x => x.InvoicingId == id && x.IsDelete != false))
+            if (_context.StoreInvoicings.Any(x => x.InvoicingDetailId == id && x.IsDelete != false))
                 errors.Add("It has already been deleted");
 
             var storeInvoicing = _context.StoreInvoicings.Find(id);
@@ -148,7 +148,7 @@ namespace FastFood.DataLayer.Services.Repository
             var result = _context.Customers.Where(x => !x.IsDelete)
                 .Select(x => new StoreInvoicingDto
                 {
-                    CustomerId = x.CustomerId
+                    CustomerId = x.Id
                 });
 
             return ServiceResult<IEnumerable<StoreInvoicingDto>>.Succeed(result);
@@ -158,7 +158,7 @@ namespace FastFood.DataLayer.Services.Repository
         public ServiceResult<StoreInvoicing> UpdatestoreInvoicing(StoreInvoicing storeInvoicing)
         {
             var errors = new List<string>();
-            if (_context.StoreInvoicings.Any(x => x.InvoicingId == storeInvoicing.InvoicingId))
+            if (_context.StoreInvoicings.Any(x => x.Id == storeInvoicing.Id))
             {
                 storeInvoicing.IsDelete = true;
                 storeInvoicing.StoreInvoicingUpdateDate = DateTime.Now;

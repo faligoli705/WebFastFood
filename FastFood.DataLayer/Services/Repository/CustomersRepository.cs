@@ -37,7 +37,7 @@ namespace FastFood.DataLayer.Services.Repository
                 customer.IsDelete = true;
                 var cacheOption = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromSeconds(60));
-                _cache.Set(customer.CustomerId, customer, cacheOption);
+                _cache.Set(customer.Id, customer, cacheOption);
                 if (customer != null)
                     return ServiceResult<Customers>.Succeed(customer);
                 if (errors.Any())
@@ -53,7 +53,7 @@ namespace FastFood.DataLayer.Services.Repository
             var result = _context.Customers.Where(x => !x.IsDelete )
                 .Select(x => new CustomersDto
                 {
-                    CustomerId = x.CustomerId,
+                    Id = x.Id,
                     FName = x.FName,
                     LName = x.LName,
                     Mobile = x.Mobile,
@@ -91,7 +91,7 @@ namespace FastFood.DataLayer.Services.Repository
             if (id < 0)
                 errors.Add("Nothing found or not selected");
 
-            if (_context.Customers.Any(x => x.CustomerId == id && x.IsDelete != false))
+            if (_context.Customers.Any(x => x.Id == id && x.IsDelete != false))
                 errors.Add("It has already been deleted");
 
             var customer = _context.Customers.Find(id);
@@ -114,7 +114,7 @@ namespace FastFood.DataLayer.Services.Repository
         public ServiceResult<Customers> UpdateCustomer(Customers customers)
         {
             var errors = new List<string>();
-            if (_context.Customers.Any(x => x.CustomerId != customers.CustomerId && x.Mobile == customers.Mobile))
+            if (_context.Customers.Any(x => x.Id != customers.Id && x.Mobile == customers.Mobile))
                 errors.Add("Mobile is duplicate");
 
             if (errors.Any())

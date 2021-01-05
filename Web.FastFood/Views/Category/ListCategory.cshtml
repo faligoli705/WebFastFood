@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FastFood.DomainClass.Domain.Dto.CategoryDto>
+﻿@model IEnumerable<WebFastFood.Models.CategoryDto>
 
 @{
     ViewData["Title"] = "ListCategory";
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryID)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
@@ -37,7 +37,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryID)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryName)

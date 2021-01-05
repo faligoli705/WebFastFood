@@ -65,12 +65,12 @@ namespace WebFastFood.Services.Repository
             }
         }
 
-        public void DeleteProduct(int productId)
+        public void DeleteProduct(int Id)
         {
             try
             {
                 _logger.LogWarning("اجرای متد حذف محصول");
-                var resuslt = _client.DeleteAsync(apiUrl + "/" + productId).Result;
+                var resuslt = _client.DeleteAsync(apiUrl + "/" + Id).Result;
             }
             catch (Exception)
             {
@@ -95,12 +95,12 @@ namespace WebFastFood.Services.Repository
             }
         }
 
-        public ProductDto GetProductById(int productId)
+        public ProductDto GetProductById(int Id)
         {
             try
             {
                 _logger.LogWarning("گرفتن محصول براساس ایدی");
-                var result = _client.GetStringAsync(apiUrl + "/" + productId).Result;
+                var result = _client.GetStringAsync(apiUrl + "/" + Id).Result;
                 ProductDto product = JsonConvert.DeserializeObject<ProductDto>(result);
                 return product;
             }
@@ -118,7 +118,7 @@ namespace WebFastFood.Services.Repository
                 _logger.LogWarning("بروزرسانی محصول");
                 string jsonProduct = JsonConvert.SerializeObject(productDto);
                 StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
-                var result = _client.PutAsync(apiUrl + "/" + productDto.ProductID, content).Result;
+                var result = _client.PutAsync(apiUrl + "/" + productDto.Id, content).Result;
             }
             catch (Exception)
             {

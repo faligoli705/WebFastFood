@@ -150,10 +150,10 @@ namespace FastFood.Controllers
                 var result = _category.UpdateCategory(category);
                 if (result.IsSucceed)
                 {
-                    _logger.LogInformation("دسته بندی اپدیت شد", category.CategoryID);
+                    _logger.LogInformation("دسته بندی اپدیت شد", category.Id);
                     return Ok(result.Data);
                 }
-                _logger.LogError("دسته بندی اپدیت نشد", category.CategoryID);
+                _logger.LogError("دسته بندی اپدیت نشد", category.Id);
                 return BadRequest(string.Join(",", result.Errors));
             }
             catch (Exception)
@@ -178,10 +178,10 @@ namespace FastFood.Controllers
                 {
                     if (result.Data != null)
                     {
-                        _logger.LogInformation("دسته بندی حذف شد", category.CategoryID);
+                        _logger.LogInformation("دسته بندی حذف شد", category.Id);
                         return Ok(result.Data);
                     }
-                    _logger.LogError("دسته بندی قبلا حذف شده است", category.CategoryID);
+                    _logger.LogError("دسته بندی قبلا حذف شده است", category.Id);
 
                     return NotFound();
                 }

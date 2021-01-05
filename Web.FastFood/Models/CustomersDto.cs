@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FastFood.DomainClass.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebFastFood.Models
 {
-    public class CustomersDto
+    public class CustomersDto :BaseEntity<Int32>
     {
-        public Int32 CustomerId { get; set; }
+        //public Int32 CustomerId { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
         public string Mobile { get; set; }

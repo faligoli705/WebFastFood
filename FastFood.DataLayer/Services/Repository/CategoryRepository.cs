@@ -44,7 +44,7 @@ namespace FastFood.DataLayer.Services.Repository
             if (id < 0)
                 errors.Add("Nothing found or not selected");
 
-            if (_context.Categories.Any(x => x.CategoryID == id && x.IsDelete != false))
+            if (_context.Categories.Any(x => x.Id == id && x.IsDelete != false))
                 errors.Add("It has already been deleted");
 
             var category = _context.Categories.Find(id);
@@ -88,7 +88,7 @@ namespace FastFood.DataLayer.Services.Repository
             var result = _context.Categories.Where(x => !x.IsDelete)
                 .Select(x => new CategoryDto
                 {
-                    CategoryID = x.CategoryID,
+                    Id = x.Id,
                     CategoryName = x.CategoryName
                 });
 
@@ -99,7 +99,7 @@ namespace FastFood.DataLayer.Services.Repository
         public ServiceResult<Category> UpdateCategory(Category category)
         {
             var errors = new List<string>();
-            if (_context.Categories.Any(x => x.CategoryID != category.CategoryID && x.CategoryName == category.CategoryName))
+            if (_context.Categories.Any(x => x.Id != category.Id && x.CategoryName == category.CategoryName))
                 errors.Add("Name is duplicate");
 
             if (errors.Any())

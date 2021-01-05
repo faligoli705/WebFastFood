@@ -45,7 +45,7 @@ namespace FastFood.DataLayer.Services.Repository
             if (id < 0)
                 errors.Add("Nothing found or not selected");
 
-            if (_context.StoreInvoicingDetails.Any(x => x.InvoicingDetailId == id && x.IsDelete != false))
+            if (_context.StoreInvoicingDetails.Any(x => x.Id == id && x.IsDelete != false))
                 errors.Add("It has already been deleted");
 
             var storeInvoicingDetails = _context.StoreInvoicingDetails.Find(id);

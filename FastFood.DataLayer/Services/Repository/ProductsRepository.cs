@@ -43,7 +43,7 @@ namespace FastFood.DataLayer.Services.Repository
         {
             StoreInvoicingDetails storeInvoicingDetails = new StoreInvoicingDetails();
             StoreInvoicing storeInvoicing = new StoreInvoicing();
-            storeInvoicingDetails.ProductId = product.ProductID;
+            storeInvoicingDetails.ProductId = product.Id;
             storeInvoicingDetails.CurrentPrice = product.UnitPrice;
             storeInvoicingDetails.Qty = product.NumberOfOrders;
             storeInvoicingDetails.InvoicingDetailCreateDate = DateTime.Now;
@@ -51,7 +51,7 @@ namespace FastFood.DataLayer.Services.Repository
 
             storeInvoicing.CustomerId = customerId;
             storeInvoicing.StoreInvoicingCreateDate = DateTime.Now;
-            storeInvoicing.InvoicingDetailId = storeInvoicingDetails.InvoicingDetailId;
+            storeInvoicing.InvoicingDetailId = storeInvoicingDetails.Id;
             _context.StoreInvoicingDetails.Add(storeInvoicingDetails);
             _context.StoreInvoicings.Add(storeInvoicing);
 
@@ -67,7 +67,7 @@ namespace FastFood.DataLayer.Services.Repository
             if (id < 0)
                 errors.Add("Nothing found or not selected");
 
-            if (_context.Products.Any(x => x.ProductID == id && x.IsDelete != false))
+            if (_context.Products.Any(x => x.Id == id && x.IsDelete != false))
                 errors.Add("It has already been deleted");
 
             var product = _context.Products.Find(id);
@@ -111,7 +111,7 @@ namespace FastFood.DataLayer.Services.Repository
             var result = _context.Products.Where(x => !x.IsDelete)
                .Select(x => new ProductsDto
                {
-                   ProductID = x.ProductID,
+                   Id = x.Id,
                    ProductName = x.ProductName,
                    CategoryId = x.CategoryId,
                    UnitPrice = x.UnitPrice,
