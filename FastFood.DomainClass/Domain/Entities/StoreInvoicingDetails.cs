@@ -8,7 +8,6 @@ namespace FastFood.DomainClass.Domain.Entities
 {
     public class StoreInvoicingDetails :BaseEntity<Int32>
     {
-        [Key]
         //public Int32 InvoicingDetailId { get; set; }
         public Int32 InvoicingId { get; set; }
         public Int32 ProductId { get; set; }

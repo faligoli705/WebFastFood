@@ -17,6 +17,7 @@ namespace FastFood.DomainClass.Domain.Dto
         public bool IsDelete { get; set; }
 
         public ICollection<Customers> Customers { get; set; }
+
         public ICollection<StoreInvoicingDetails> StoreInvoicingDetails { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,15 @@ namespace WebFastFood.Controllers
     [Authorize]
     public class ProductController : Controller
     {
+        /// <summary>
+        /// 
+        /// </summary>
         IProduct _product;
-        ILogger<ProductController> _logger;
+        private readonly ILogger<ProductController> _logger;
         public ProductController(IProduct product, ILogger<ProductController> logger)
         {
             _product = product;
+            _logger = logger;
         }
         public IActionResult Product()
         {
@@ -33,7 +38,8 @@ namespace WebFastFood.Controllers
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("خطای ناشناخته");
+
             }
         }
 

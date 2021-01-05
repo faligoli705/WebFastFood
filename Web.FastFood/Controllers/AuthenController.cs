@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +80,8 @@ namespace WebFastFood.Controllers
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException(" خطای ناشناخته در ورود به سیستم");
+
             }
         }
     }
