@@ -26,10 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FastFood.Business\FastFood.Business.csproj" />
     <ProjectReference Include="..\FastFood.DataLayer\FastFood.DataLayer.csproj" />
     <ProjectReference Include="..\FastFood.DomainClass\FastFood.DomainClass.csproj" />
-    <ProjectReference Include="..\FastFood.Utilities\FastFood.Utilities.csproj" />
+    <ProjectReference Include="..\FastFood.Utilities\FastFood.Infrastucture.csproj" />
     <ProjectReference Include="..\FastFood.ViewModels\FastFood.ViewModels.csproj" />
   </ItemGroup>
 

@@ -243,11 +243,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FastFood.Business\FastFood.Business.csproj" />
     <ProjectReference Include="..\FastFood.DataLayer\FastFood.DataLayer.csproj" />
     <ProjectReference Include="..\FastFood.DomainClass\FastFood.DomainClass.csproj" />
     <ProjectReference Include="..\FastFood\FastFood.csproj" />
-    <ProjectReference Include="..\WebFramwork\WebFramwork.csproj" />
   </ItemGroup>
 
   <ItemGroup>
