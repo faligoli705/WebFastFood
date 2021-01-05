@@ -166,13 +166,13 @@ namespace FastFood
         /// <param name="services"></param>
         public void InitServices(IServiceCollection services)
         {
-            services.AddTransient<ICustomer, CustomersRepository>();
-            services.AddTransient<IStoreInvoicingDetails, StoreInvoicingDetailsRepository>();
-            services.AddTransient<IStoreInvoicing, StoreInvoicingRepository>();
-            services.AddTransient<ICategory, CategoryRepository>();
-            services.AddTransient<IProduct, ProductsRepository>();
-            services.AddTransient<AutomapperConfig>();
-            services.AddTransient<IAuthen, AuthenRepository>();
+            services.AddScoped<ICustomer,CustomersRepository>();
+            services.AddScoped<IStoreInvoicingDetails, StoreInvoicingDetailsRepository>();
+            services.AddScoped<IStoreInvoicing, StoreInvoicingRepository>();
+            services.AddScoped<ICategory, CategoryRepository>();
+            services.AddScoped<IProduct, ProductsRepository>();
+            services.AddScoped<AutomapperConfig>();
+            services.AddScoped<IAuthen, AuthenRepository>();
         }
     }
 }
