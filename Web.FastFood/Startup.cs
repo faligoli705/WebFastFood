@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebFastFood.Services.Contracts;
 using WebFastFood.Services.Repository;
+using WebFramwork.Middlewares;
 
 namespace Web.FastFood
 {
@@ -58,6 +59,7 @@ namespace Web.FastFood
             {
                 app.UseExceptionHandler("/Customer/Error");
             }
+            app.UseCustomExceptionHandler();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();

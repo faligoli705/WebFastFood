@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Common.Exceptions;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,8 @@ namespace WebFastFood.Services.Repository
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("کاستومر با خطا مواجه شد");
+
             }
         }
 

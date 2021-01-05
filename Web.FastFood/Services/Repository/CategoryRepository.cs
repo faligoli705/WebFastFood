@@ -1,4 +1,5 @@
-﻿using FastFood.DataLayer.Services;
+﻿using Common.Exceptions;
+using FastFood.DataLayer.Services;
 using FastFood.DomainClass.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -33,12 +34,13 @@ namespace WebFastFood.Services.Repository
                 _loggr.LogWarning("اجرای متد اضافه کردن دسته بندی");
                 string jsonProduct = JsonConvert.SerializeObject(categoryDto);
                 StringContent content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
-                var result = _client.PostAsync(apiUrl, content).Result;
+                var result =  _client.PostAsync(apiUrl, content).Result;
                 var isSuccessStatusCode = result.IsSuccessStatusCode;
                 res = isSuccessStatusCode;
                 if (res == false)
                 {
                     _loggr.LogError("اضافه کردن دسته بندی با خطا مواجه شد");
+                    throw new BadRequestException("اضافه کردن دسته بندی با خطا مواجه شد");
                     res = isSuccessStatusCode;
                 }
             }
@@ -60,7 +62,8 @@ namespace WebFastFood.Services.Repository
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("حذف با خطا مواجه شد");
+
             }
         }
 
@@ -78,7 +81,8 @@ namespace WebFastFood.Services.Repository
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("دسته بندی با خطا مواجه شد");
+
             }
         }
 
@@ -94,7 +98,8 @@ namespace WebFastFood.Services.Repository
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("دسته بندی ایدی با خطا مواجه شد");
+
             }
         }
 
@@ -110,7 +115,8 @@ namespace WebFastFood.Services.Repository
             catch (Exception)
             {
 
-                throw;
+                throw new BadRequestException("بروزرسانی دسته بندی با خطا مواجه شد");
+
             }
         }
     }

@@ -247,6 +247,13 @@
     <ProjectReference Include="..\FastFood.DataLayer\FastFood.DataLayer.csproj" />
     <ProjectReference Include="..\FastFood.DomainClass\FastFood.DomainClass.csproj" />
     <ProjectReference Include="..\FastFood\FastFood.csproj" />
+    <ProjectReference Include="..\WebFramwork\WebFramwork.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Common">
+      <HintPath>..\..\..\..\Downloads\Compressed\Chapter_02\Examples\Chapter_09_Project\Common\bin\Debug\netcoreapp2.1\Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
